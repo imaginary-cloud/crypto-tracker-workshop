@@ -8,14 +8,22 @@ function CryptoSearch() {
   const [coin, setcoin] = useState('')
   const [coinsList, setCoinsList] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const getCoin = useCryptoSearch()
 
   useEffect(async () => {
-    setIsLoading(true)
-    const result = await getCoin(coin)
-    setIsLoading(false)
-    setCoinsList(result)
+    try {
+      setError(null)
+      setIsLoading(true)
+      const result = await getCoin(coin)
+      setIsLoading(false)
+      setCoinsList(result)
+    } catch (e) {
+      setIsLoading(false)
+      setError('Error during request for: ', coin)
+      setCoinsList([])
+    }
   }, [coin])
 
   return (
@@ -25,6 +33,7 @@ function CryptoSearch() {
       {coinsList.map((realCoin) => (
         <span>{realCoin.name}</span>
       ))}
+      {error && <span>{error}</span>}
     </>
   )
 }
