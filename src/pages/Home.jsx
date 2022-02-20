@@ -4,6 +4,7 @@ import { styled } from '@mui/system'
 import colors from '../assets/colors'
 import CoinSpinner from '../components/CoinSpinner'
 import Title from '../components/Title'
+import CryptoSearch from '../components/CryptoSearch'
 
 const StyledApp = styled('section')({
   padding: '2rem',
@@ -22,6 +23,7 @@ function Home() {
   return (
     <StyledApp className="App">
       <Title title="Crypto Tracker" />
+      <CryptoSearch />
       {isLoading && <CoinSpinner fullscreen />}
     </StyledApp>
   )
