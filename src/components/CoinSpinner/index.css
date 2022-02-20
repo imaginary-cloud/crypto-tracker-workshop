@@ -1,0 +1,210 @@
+/*:root {
+  --face: #be9d66;
+  --lowlight: #111;
+  --side: #896c3b;
+  --side-dark: #120e08;
+  --coin-size: 7rem;
+  --coin-ic-r: url('/public/images/coin/face_r.jpg');
+  --coin-ic-l: url('/public/images/coin/face_l.jpg');
+  --coin-ic-f: url('/public/images/coin/face_f.jpg');
+  --coin-doge-r: url('/public/images/coin/doge-r.jpg');
+  --coin-doge-l: url('/public/images/coin/doge-l.jpg');
+  --coin-doge-f: url('/public/images/coin/doge-f.jpg');
+  --coin-bit-r: url('/public/images/coin/bit-r.jpg');
+  --coin-bit-l: url('/public/images/coin/bit-l.jpg');
+  --coin-bit-f: url('/public/images/coin/bit-f.jpg');
+  --counter: 0;
+  font-size: 35px;
+}*/
+
+.coin-container {
+  /*height: 500px;
+  width: 500px;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  --face: #be9d66;
+  --lowlight: #111;
+  --side: #896c3b;
+  --side-dark: #120e08;
+  --coin-size: 7rem;
+  --coin-ic-r: url('/public/images/coin/face_r.jpg');
+  --coin-ic-l: url('/public/images/coin/face_l.jpg');
+  --coin-ic-f: url('/public/images/coin/face_f.jpg');
+  --coin-doge-r: url('/public/images/coin/doge-r.jpg');
+  --coin-doge-l: url('/public/images/coin/doge-l.jpg');
+  --coin-doge-f: url('/public/images/coin/doge-f.jpg');
+  --coin-bit-r: url('/public/images/coin/bit-r.jpg');
+  --coin-bit-l: url('/public/images/coin/bit-l.jpg');
+  --coin-bit-f: url('/public/images/coin/bit-f.jpg');
+  --counter: 0;
+  font-size: 35px;
+}
+
+.coin-container.fullscreen {
+  height: 100vh;
+  width: 100vw;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.75);
+  position: absolute;
+  top:0;
+  left:0;
+  display: flex;
+  flex-direction: column;
+}
+
+.coin-title {
+  font-size: 25px;
+  color: black;
+}
+
+.coin-container.fullscreen .coin-title {
+  color: white;
+}
+
+.coin-subtitle {
+  font-size: 10px;
+  color: #ffbf00;
+}
+
+.coin {
+  height: var(--coin-size);
+  width: var(--coin-size);
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.coin::before {
+  content: '';
+  display: block;
+  position: relative;
+  height: var(--coin-size);
+  width: var(--coin-size);
+  border-radius: 50%;
+  background-color: var(--face);
+  animation: spin 5s linear infinite;
+  background-size: 100% 100%;
+  background-position: center;
+  background-blend-mode: overlay;
+}
+
+
+/* animation definitions */
+@keyframes spin {
+  0% {
+    width: var(--coin-size);
+    box-shadow: 0 0 0 var(--side-dark);
+    animation-timing-function: ease-in;
+    background-image: var(--coin-ic-f);
+  }
+  12.499% {
+    width: 0.1rem;
+    box-shadow: 0.05rem 0 0 var(--side), 0.1rem 0 0 var(--side), 0.15rem 0 0 var(--side), 0.2rem 0 0 var(--side), 0.25rem 0 0 var(--side), 0.3rem 0 0 var(--side), 0.35rem 0 0 var(--side), 0.4rem 0 0 var(--side), 0.45rem 0 0 var(--side), 0.5rem 0 0 var(--side), 0.55rem 0 0 var(--side), 0.6rem 0 0 var(--side), 0.65rem 0 0 var(--side), 0.7rem 0 0 var(--side), 0.75rem 0 0 var(--side);
+    transform: translateX(-0.375rem);
+    background-color: var(--lowlight);
+    animation-timing-function: linear;
+    background-image: var(--coin-ic-r);
+  }
+  12.501% {
+    width: 0.1rem;
+    box-shadow: -0.05rem 0 0 var(--side), -0.1rem 0 0 var(--side), -0.15rem 0 0 var(--side), -0.2rem 0 0 var(--side), -0.25rem 0 0 var(--side), -0.3rem 0 0 var(--side), -0.35rem 0 0 var(--side), -0.4rem 0 0 var(--side), -0.45rem 0 0 var(--side), -0.5rem 0 0 var(--side), -0.55rem 0 0 var(--side), -0.6rem 0 0 var(--side), -0.65rem 0 0 var(--side), -0.7rem 0 0 var(--side), -0.75rem 0 0 var(--side);
+    transform: translateX(0.375rem);
+    background-color: var(--lowlight);
+    background-image: var(--coin-doge-l);
+    animation-timing-function: ease-out;
+  }
+  24.999% {
+    width: var(--coin-size);
+    box-shadow: 0 0 0 var(--side-dark);
+    background-color: var(--face);
+    background-image: var(--coin-doge-f);
+  }
+  25.001% {
+    width: var(--coin-size);
+    box-shadow: 0 0 0 var(--side-dark);
+    animation-timing-function: ease-in;
+    background-image: var(--coin-doge-f);
+  }
+  37.499% {
+    width: 0.1rem;
+    box-shadow: 0.05rem 0 0 var(--side), 0.1rem 0 0 var(--side), 0.15rem 0 0 var(--side), 0.2rem 0 0 var(--side), 0.25rem 0 0 var(--side), 0.3rem 0 0 var(--side), 0.35rem 0 0 var(--side), 0.4rem 0 0 var(--side), 0.45rem 0 0 var(--side), 0.5rem 0 0 var(--side), 0.55rem 0 0 var(--side), 0.6rem 0 0 var(--side), 0.65rem 0 0 var(--side), 0.7rem 0 0 var(--side), 0.75rem 0 0 var(--side);
+    transform: translateX(-0.375rem);
+    background-color: var(--lowlight);
+    animation-timing-function: linear;
+    background-image: var(--coin-doge-r);
+  }
+  37.501% {
+    width: 0.1rem;
+    box-shadow: -0.05rem 0 0 var(--side), -0.1rem 0 0 var(--side), -0.15rem 0 0 var(--side), -0.2rem 0 0 var(--side), -0.25rem 0 0 var(--side), -0.3rem 0 0 var(--side), -0.35rem 0 0 var(--side), -0.4rem 0 0 var(--side), -0.45rem 0 0 var(--side), -0.5rem 0 0 var(--side), -0.55rem 0 0 var(--side), -0.6rem 0 0 var(--side), -0.65rem 0 0 var(--side), -0.7rem 0 0 var(--side), -0.75rem 0 0 var(--side);
+    transform: translateX(0.375rem);
+    background-color: var(--lowlight);
+    background-image: var(--coin-ic-l);
+    animation-timing-function: ease-out;
+  }
+  49.999% {
+    width: var(--coin-size);
+    box-shadow: 0 0 0 var(--side-dark);
+    background-color: var(--face);
+    background-image: var(--coin-ic-f);
+  }
+  50.001% {
+    width: var(--coin-size);
+    box-shadow: 0 0 0 var(--side-dark);
+    animation-timing-function: ease-in;
+    background-image: var(--coin-ic-f);
+  }
+  62.499% {
+    width: 0.1rem;
+    box-shadow: 0.05rem 0 0 var(--side), 0.1rem 0 0 var(--side), 0.15rem 0 0 var(--side), 0.2rem 0 0 var(--side), 0.25rem 0 0 var(--side), 0.3rem 0 0 var(--side), 0.35rem 0 0 var(--side), 0.4rem 0 0 var(--side), 0.45rem 0 0 var(--side), 0.5rem 0 0 var(--side), 0.55rem 0 0 var(--side), 0.6rem 0 0 var(--side), 0.65rem 0 0 var(--side), 0.7rem 0 0 var(--side), 0.75rem 0 0 var(--side);
+    transform: translateX(-0.375rem);
+    background-color: var(--lowlight);
+    animation-timing-function: linear;
+    background-image: var(--coin-ic-r);
+  }
+  62.501% {
+    width: 0.1rem;
+    box-shadow: -0.05rem 0 0 var(--side), -0.1rem 0 0 var(--side), -0.15rem 0 0 var(--side), -0.2rem 0 0 var(--side), -0.25rem 0 0 var(--side), -0.3rem 0 0 var(--side), -0.35rem 0 0 var(--side), -0.4rem 0 0 var(--side), -0.45rem 0 0 var(--side), -0.5rem 0 0 var(--side), -0.55rem 0 0 var(--side), -0.6rem 0 0 var(--side), -0.65rem 0 0 var(--side), -0.7rem 0 0 var(--side), -0.75rem 0 0 var(--side);
+    transform: translateX(0.375rem);
+    background-color: var(--lowlight);
+    background-image: var(--coin-bit-l);
+    animation-timing-function: ease-out;
+  }
+  74.999% {
+    width: var(--coin-size);
+    box-shadow: 0 0 0 var(--side-dark);
+    background-color: var(--face);
+    background-image: var(--coin-bit-f);
+  }
+  75.001% {
+    width: var(--coin-size);
+    box-shadow: 0 0 0 var(--side-dark);
+    animation-timing-function: ease-in;
+    background-image: var(--coin-bit-f);
+  }
+  87.499% {
+    width: 0.1rem;
+    box-shadow: 0.05rem 0 0 var(--side), 0.1rem 0 0 var(--side), 0.15rem 0 0 var(--side), 0.2rem 0 0 var(--side), 0.25rem 0 0 var(--side), 0.3rem 0 0 var(--side), 0.35rem 0 0 var(--side), 0.4rem 0 0 var(--side), 0.45rem 0 0 var(--side), 0.5rem 0 0 var(--side), 0.55rem 0 0 var(--side), 0.6rem 0 0 var(--side), 0.65rem 0 0 var(--side), 0.7rem 0 0 var(--side), 0.75rem 0 0 var(--side);
+    transform: translateX(-0.375rem);
+    background-color: var(--lowlight);
+    animation-timing-function: linear;
+    background-image: var(--coin-bit-r);
+  }
+  87.501% {
+    width: 0.1rem;
+    box-shadow: -0.05rem 0 0 var(--side), -0.1rem 0 0 var(--side), -0.15rem 0 0 var(--side), -0.2rem 0 0 var(--side), -0.25rem 0 0 var(--side), -0.3rem 0 0 var(--side), -0.35rem 0 0 var(--side), -0.4rem 0 0 var(--side), -0.45rem 0 0 var(--side), -0.5rem 0 0 var(--side), -0.55rem 0 0 var(--side), -0.6rem 0 0 var(--side), -0.65rem 0 0 var(--side), -0.7rem 0 0 var(--side), -0.75rem 0 0 var(--side);
+    transform: translateX(0.375rem);
+    background-color: var(--lowlight);
+    background-image: var(--coin-ic-l);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    width: var(--coin-size);
+    box-shadow: 0 0 0 var(--side-dark);
+    background-color: var(--face);
+    background-image: var(--coin-ic-f);
+  }
+}
