@@ -102,19 +102,19 @@ function CryptoCard({ id, data }) {
                 variant="h3"
                 style={{ justifyContent: 'flex-start' }}
               >
-                {data?.quotes?.USD?.price.toFixed(2)} $
+                {data?.quotes?.USD?.price?.toFixed(2)} $
               </Typography>
-              <CryptoValueChange
+              {/* <CryptoValueChange
                 value={data?.quotes?.USD?.percent_change_24h}
-              />
+              /> */}
             </CryptoPrice>
             <br />
             <Typography variant="body2">
-              <b>Supply:</b> {data?.circulating_supply.toFixed(2)} $
+              <b>Supply:</b> {data?.circulating_supply?.toFixed(2)} $
             </Typography>
             <Typography variant="body2">
-              <b>Volume last 24H:</b> {data?.quotes?.USD?.volume_24h.toFixed(2)}{' '}
-              $
+              <b>Volume last 24H:</b>{' '}
+              {data?.quotes?.USD?.volume_24h?.toFixed(2)} $
             </Typography>
             <FavoriteIcon>
               <StarBorder color="secondary" fontSize="large" />

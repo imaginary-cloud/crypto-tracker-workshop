@@ -1,8 +1,17 @@
 import React, { useState } from 'react'
-import { useCryptoSearch } from '../hooks/useCryptoSearch'
+import { styled } from '@mui/system'
 
+import { useCryptoSearch } from '../hooks/useCryptoSearch'
 import SearchInput from './SearchInput'
 import CoinSpinner from './CoinSpinner'
+import CryptoCard from './CryptoCard'
+
+const AlignedSearch = styled('div')({
+  display: 'flex',
+  margin: '30px',
+  justifyContent: 'center',
+  flexWrap: 'wrap',
+})
 
 function CryptoSearch() {
   const [coin, setcoin] = useState('')
@@ -13,7 +22,13 @@ function CryptoSearch() {
     <>
       <SearchInput setCoin={setcoin} />
       {isLoading && <CoinSpinner />}
-      {coinsList && coinsList.map((realCoin) => <span>{realCoin.name}</span>)}
+      {coinsList && (
+        <AlignedSearch>
+          {coinsList.map((currency) => (
+            <CryptoCard id={currency.id} data={currency} key={currency.id} />
+          ))}
+        </AlignedSearch>
+      )}
       {error && <span>{error}</span>}
     </>
   )
