@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { styled } from '@mui/system'
 import Grid from '@mui/material/Grid'
@@ -90,43 +90,50 @@ CryptoValueChange.propTypes = {
 function CryptoCard({ id }) {
   const { isLoading, data, error } = useGetCryptoInfo(id)
 
+  const Content = useCallback(() => {
+    if (isLoading) {
+      return <CoinSpinner />
+    }
+    if (error) {
+      return <span>{error.message}</span>
+    }
+
+    return (
+      <CryptoCardContainer>
+        <CustomCardContent>
+          <Typography variant="h3">{data?.name}</Typography>
+          <Typography variant="h5">{data?.symbol}</Typography>
+          <CryptoPrice>
+            <Typography
+              color="secondary"
+              variant="h3"
+              style={{ justifyContent: 'flex-start' }}
+            >
+              {data?.quotes?.USD?.price?.toFixed(2)} $
+            </Typography>
+            <CryptoValueChange value={data?.quotes?.USD?.percent_change_24h} />
+          </CryptoPrice>
+          <br />
+          <Typography variant="body2">
+            <b>Supply:</b> {data?.circulating_supply?.toFixed(2)} $
+          </Typography>
+          <Typography variant="body2">
+            <b>Volume last 24H:</b> {data?.quotes?.USD?.volume_24h?.toFixed(2)}{' '}
+            $
+          </Typography>
+          <FavoriteIcon>
+            <StarBorder color="secondary" fontSize="large" />
+          </FavoriteIcon>
+        </CustomCardContent>
+        <CardLogo symbol={data?.symbol} />
+      </CryptoCardContainer>
+    )
+  }, [isLoading, error, data])
+
   return (
     <Grid item xs={12} md={6} lg={4}>
       <Box sx={{ m: '1rem', height: '90%' }}>
-        {isLoading && <CoinSpinner />}
-        {error && <span>{error.message}</span>}
-        {data && (
-          <CryptoCardContainer>
-            <CustomCardContent>
-              <Typography variant="h3">{data?.name}</Typography>
-              <Typography variant="h5">{data?.symbol}</Typography>
-              <CryptoPrice>
-                <Typography
-                  color="secondary"
-                  variant="h3"
-                  style={{ justifyContent: 'flex-start' }}
-                >
-                  {data?.quotes?.USD?.price?.toFixed(2)} $
-                </Typography>
-                <CryptoValueChange
-                  value={data?.quotes?.USD?.percent_change_24h}
-                />
-              </CryptoPrice>
-              <br />
-              <Typography variant="body2">
-                <b>Supply:</b> {data?.circulating_supply?.toFixed(2)} $
-              </Typography>
-              <Typography variant="body2">
-                <b>Volume last 24H:</b>{' '}
-                {data?.quotes?.USD?.volume_24h?.toFixed(2)} $
-              </Typography>
-              <FavoriteIcon>
-                <StarBorder color="secondary" fontSize="large" />
-              </FavoriteIcon>
-            </CustomCardContent>
-            <CardLogo symbol={data?.symbol} />
-          </CryptoCardContainer>
-        )}
+        <Content />
       </Box>
     </Grid>
   )
