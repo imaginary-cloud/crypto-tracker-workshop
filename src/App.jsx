@@ -1,5 +1,6 @@
 import React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import './App.css'
 import colors from './assets/colors'
@@ -16,10 +17,14 @@ const theme = createTheme({
   },
 })
 
+const queryClient = new QueryClient()
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Home />
+      <QueryClientProvider client={queryClient}>
+        <Home />
+      </QueryClientProvider>
     </ThemeProvider>
   )
 }
