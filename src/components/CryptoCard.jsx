@@ -45,8 +45,8 @@ const CardLogo = styled(CryptoLogo)({
 
 const FavoriteIcon = styled('div')({
   position: 'absolute',
-  right: '10px',
-  top: '10px',
+  right: '16px',
+  top: '16px',
   cursor: 'pointer',
 })
 
@@ -66,11 +66,11 @@ function CryptoValueChange({ value }) {
 
   return value >= 0 ? (
     <ValueChange color="#0f0" variant="body1" component="div">
-      {value.toFixed(2)} <ArrowUpwardIcon fontSize="medium" />
+      {value.toFixed(2)}%<ArrowUpwardIcon fontSize="medium" />
     </ValueChange>
   ) : (
     <ValueChange color="#f00" variant="body1" component="div">
-      {value.toFixed(2)} <ArrowDownwardIcon fontSize="medium" />
+      {value.toFixed(2)}%<ArrowDownwardIcon fontSize="medium" />
     </ValueChange>
   )
 }
@@ -84,19 +84,10 @@ CryptoValueChange.propTypes = {
  * @param {string} id - id of the coin
  * @returns React.FunctionComponent<{ id: number | string }>
  */
-function CryptoCard({ id }) {
-  console.log(id)
 
-  const data = {
-    id: 'btc-bitcoin',
-    name: 'Bitcoin',
-    symbol: 'BTC',
-    rank: 1,
-    is_new: false,
-    is_active: true,
-    type: 'coin',
-    rev: 10557311,
-  }
+function CryptoCard({ id, data }) {
+  console.log(id)
+  console.log(data)
 
   return (
     <Grid item xs={12} md={6} lg={4}>
@@ -138,6 +129,7 @@ function CryptoCard({ id }) {
 
 CryptoCard.propTypes = {
   id: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
 }
 
 export default CryptoCard
