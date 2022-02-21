@@ -5,6 +5,8 @@ import { useCryptoSearch } from '../hooks/useCryptoSearch'
 import SearchInput from './SearchInput'
 import CoinSpinner from './CoinSpinner'
 import CryptoCard from './CryptoCard'
+import ErrorMessage from './ErrorMessage'
+import EmptyListMessage from './EmptyListMessage'
 
 const AlignedSearch = styled('div')({
   display: 'flex',
@@ -22,14 +24,15 @@ function CryptoSearch() {
     <>
       <SearchInput setCoin={setcoin} />
       {isLoading && <CoinSpinner />}
-      {coinsList && (
+      {coinsList && coinsList.length !== 0 && (
         <AlignedSearch>
           {coinsList.map((currency) => (
             <CryptoCard id={currency.id} data={currency} key={currency.id} />
           ))}
         </AlignedSearch>
       )}
-      {error && <span>{error}</span>}
+      {coinsList && coinsList.length === 0 && <EmptyListMessage id={coin} />}
+      {error && <ErrorMessage id={coin} error={error.message} />}
     </>
   )
 }
