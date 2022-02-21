@@ -9,5 +9,9 @@ export const useGetCryptoInfo = (coin) =>
       const { data: result } = await getCoin(coin)
       return result
     },
-    {},
+    {
+      // Refetch the data every half second
+      refetchInterval: 30000,
+      retry: false,
+    },
   )
