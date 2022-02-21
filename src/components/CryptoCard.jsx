@@ -13,6 +13,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import CryptoLogo from './CryptoLogo'
 import { useGetCryptoInfo } from '../hooks/useGetCryptoInfo'
 import CoinSpinner from './CoinSpinner'
+import ErrorMessage from './ErrorMessage'
 
 const CryptoCardContainer = styled(Card)({
   position: 'relative',
@@ -95,7 +96,7 @@ function CryptoCard({ id }) {
       return <CoinSpinner />
     }
     if (error) {
-      return <span>{error.message}</span>
+      return <ErrorMessage id={id} error={error.message} />
     }
 
     return (
@@ -128,7 +129,7 @@ function CryptoCard({ id }) {
         <CardLogo symbol={data?.symbol} />
       </CryptoCardContainer>
     )
-  }, [isLoading, error, data])
+  }, [isLoading, error, data, id])
 
   return (
     <Grid item xs={12} md={6} lg={4}>
