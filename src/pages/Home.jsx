@@ -5,6 +5,7 @@ import colors from '../assets/colors'
 import CoinSpinner from '../components/CoinSpinner'
 import Title from '../components/Title'
 import CryptoSearch from '../components/CryptoSearch'
+import FavoritesList from '../components/FavoritesList'
 
 const StyledApp = styled('section')({
   padding: '2rem',
@@ -24,6 +25,7 @@ function Home() {
     <StyledApp className="App">
       <Title title="Crypto Tracker" />
       <CryptoSearch />
+      <FavoritesList />
       {isLoading && <CoinSpinner fullscreen />}
     </StyledApp>
   )
