@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { styled } from '@mui/system'
 import Grid from '@mui/material/Grid'
-import { StarBorder } from '@mui/icons-material'
+import { StarBorder, Star } from '@mui/icons-material'
 
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -91,17 +91,24 @@ CryptoValueChange.propTypes = {
  */
 
 function CryptoCard({ id }) {
+  const [isFavorte, setIsFavorite] = useState(false)
   const { isLoading, data, error } = useGetCryptoInfo(id)
+
+  useEffect(() => {
+    const cryptoFavorites = getStorageItem(FAVORITES_KEY)
+    const isFav = !!cryptoFavorites.find((crypto) => crypto === id)
+    setIsFavorite(isFav)
+  }, [id])
 
   const toggleFavorites = useCallback(() => {
     const cryptoFavorites = getStorageItem(FAVORITES_KEY)
-    const isFavorite = !!cryptoFavorites.find((crypto) => crypto === id)
-    const newFav = isFavorite
+    const newFav = isFavorte
       ? cryptoFavorites.filter((crypto) => crypto !== id)
       : [...cryptoFavorites, id]
 
     setStorageItem(FAVORITES_KEY, newFav)
-  }, [id])
+    setIsFavorite(!isFavorte)
+  }, [id, isFavorte])
 
   const Content = useCallback(() => {
     if (isLoading) {
@@ -135,13 +142,17 @@ function CryptoCard({ id }) {
             $
           </Typography>
           <FavoriteIcon onClick={toggleFavorites}>
-            <StarBorder color="secondary" fontSize="large" />
+            {isFavorte ? (
+              <Star color="secondary" fontSize="large" />
+            ) : (
+              <StarBorder color="secondary" fontSize="large" />
+            )}
           </FavoriteIcon>
         </CustomCardContent>
         <CardLogo symbol={data?.symbol} />
       </CryptoCardContainer>
     )
-  }, [isLoading, error, data, id, toggleFavorites])
+  }, [isLoading, error, data, id, toggleFavorites, isFavorte])
 
   return (
     <Grid item xs={12} md={6} lg={4}>
