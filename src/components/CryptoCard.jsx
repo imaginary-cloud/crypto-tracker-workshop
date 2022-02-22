@@ -14,6 +14,8 @@ import CryptoLogo from './CryptoLogo'
 import { useGetCryptoInfo } from '../hooks/useGetCryptoInfo'
 import CoinSpinner from './CoinSpinner'
 import ErrorMessage from './ErrorMessage'
+import { setStorageItem, getStorageItem } from '../utils/storage'
+import { FAVORITES_KEY } from '../utils/constants'
 
 const CryptoCardContainer = styled(Card)({
   position: 'relative',
@@ -91,6 +93,16 @@ CryptoValueChange.propTypes = {
 function CryptoCard({ id }) {
   const { isLoading, data, error } = useGetCryptoInfo(id)
 
+  const toggleFavorites = useCallback(() => {
+    const cryptoFavorites = getStorageItem(FAVORITES_KEY)
+    const isFavorite = !!cryptoFavorites.find((crypto) => crypto === id)
+    const newFav = isFavorite
+      ? cryptoFavorites.filter((crypto) => crypto !== id)
+      : [...cryptoFavorites, id]
+
+    setStorageItem(FAVORITES_KEY, newFav)
+  }, [id])
+
   const Content = useCallback(() => {
     if (isLoading) {
       return <CoinSpinner />
@@ -122,14 +134,14 @@ function CryptoCard({ id }) {
             <b>Volume last 24H:</b> {data?.quotes?.USD?.volume_24h?.toFixed(2)}{' '}
             $
           </Typography>
-          <FavoriteIcon>
+          <FavoriteIcon onClick={toggleFavorites}>
             <StarBorder color="secondary" fontSize="large" />
           </FavoriteIcon>
         </CustomCardContent>
         <CardLogo symbol={data?.symbol} />
       </CryptoCardContainer>
     )
-  }, [isLoading, error, data, id])
+  }, [isLoading, error, data, id, toggleFavorites])
 
   return (
     <Grid item xs={12} md={6} lg={4}>
