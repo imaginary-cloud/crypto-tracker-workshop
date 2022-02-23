@@ -14,12 +14,18 @@ const AlignedList = styled('div')({
   flexWrap: 'wrap',
 })
 
+const FavoritesTitle = styled('div')({
+  marginTop: '60px',
+})
+
 function FavoritesList() {
   const cryptoFavorites = useRecoilValue(cryptoFavoritesList)
 
   return (
     <>
-      <Title title="My Favorites" secondary />
+      <FavoritesTitle>
+        <Title title="My Favorites" secondary />
+      </FavoritesTitle>
       <AlignedList>
         {cryptoFavorites.map((crypto) => (
           <CryptoCard key={`fav-${crypto}`} id={crypto} />
