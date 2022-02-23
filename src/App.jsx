@@ -1,6 +1,7 @@
 import React from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { RecoilRoot } from 'recoil'
 
 import './App.css'
 import colors from './assets/colors'
@@ -23,7 +24,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <Home />
+        <RecoilRoot>
+          <Home />
+        </RecoilRoot>
       </QueryClientProvider>
     </ThemeProvider>
   )

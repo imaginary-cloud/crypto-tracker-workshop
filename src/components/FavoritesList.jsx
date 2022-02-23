@@ -2,8 +2,8 @@ import React from 'react'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/system'
 
-import { FAVORITES_KEY } from '../utils/constants'
-import { getStorageItem } from '../utils/storage'
+import { useRecoilValue } from 'recoil'
+import { cryptoFavoritesList } from '../state/atoms'
 import Title from './Title'
 import CryptoCard from './CryptoCard'
 
@@ -15,7 +15,7 @@ const AlignedList = styled('div')({
 })
 
 function FavoritesList() {
-  const cryptoFavorites = getStorageItem(FAVORITES_KEY)
+  const cryptoFavorites = useRecoilValue(cryptoFavoritesList)
 
   return (
     <>
