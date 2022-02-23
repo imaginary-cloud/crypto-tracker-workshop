@@ -1,70 +1,312 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[github-url]: https://abc.de
 
-## Available Scripts
+# Crypto Tracker
 
-In the project directory, you can run:
+Crypto Tracker is a fancy web application built with React to follow the price and assorted metrics of a given set of crypto currencies.
+This application provides the following functionalities:
 
-### `npm start`
+* Search for crypto currencies;
+* Display the price, volume and remaining metrics for a chosen coin;
+* Allow users to follow crypto currencies;
+* Offer a dashboard to consult the price and associated metrics for all followed crypto currencies.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Table of contents
 
-### `npm test`
+* [Setup](#setup) - General instructions to install Node v16;
+* [Bootstrapping](#bootstrapping) - Instructions to get the application running on your machine;
+* [Building our application](#building-our-application) - Moving into the codebase and hacking our way into an application;
+* [Next steps](#next-steps) - Suggestions of further challenges to enhance our tracker.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Setup
+Make sure you have Node v16 installed and ready to go, either download it directly from its [download page](https://nodejs.org/en/download/), or through [`nvm`](https://github.com/nvm-sh/nvm#installing-and-updating), which we recommend for both Linux and macOS.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Follow the next set of instructions to complete your setup with `nvm`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## NVM
+### Install Node v16:
+```bash
+nvm install 16.14.0
+```
 
-### `npm run eject`
+### Select Node v16
+```bash
+nvm use 16.14.0
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Validate that Node v16 is installed and available
+```bash
+node --version
+> v16.14.0
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+# Bootstrapping
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Clone this repo
+```bash
+git clone  https://github.com/imaginary-cloud/crypto-tracker-workshop.git crypto-tracker
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+cd crypto-tracker
+```
 
-### Code Splitting
+## Install all dependencies
+```bash
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Start the application
+```
+npm run start
+```
 
-### Analyzing the Bundle Size
+The application will be launched and will become accessible on [http://localhost:3000](http:/localhost:3000).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Explore the project and provided components found on the [component folder](./src/components/).
+Please play, import some component into the [App](./src//App.jsx) component, see what happens and have some fun with it.
 
-### Making a Progressive Web App
+# Building our application
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+## Search integration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Searching for a crypto currency will be the root feature that will power this application.
+As you can observe on [SearchInput](./src/components/SearchInput.jsx), which provides an base component to start implementing our search.
 
-### Deployment
+Relying upon Coinpaprika's api, implement the applications search capabilities, taking advantage of its [search endpoint](https://api.coinpaprika.com/#tag/Tools/paths/~1search/get).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+* Example of the search 'bit' - https://api.coinpaprika.com/v1/search/?limit=6&c=currencies&q=bit
 
-### `npm run build` fails to minify
+For this exercise we will focus on a minimalist approach relying exclusively upon basic React constructs:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* [useState](https://reactjs.org/docs/hooks-state.html) - React's hook to monitor a value, like a number, string or object, as well as a base construct to update the value. Handy when storing a value provided by the user;
+* [useEffect](https://reactjs.org/docs/hooks-effect.html) - React's hook to interact with the component's lifecycle and place a subscription over a set of values, to trigger the hook upon changes. Helpful when additional data needs to be fetched after receiving a new input.
+* [Request](./src/api/utils/request.js) - A general purpose wrapper for [Axios](https://github.com/axios/axios) with minimal configuration for everything related with performing request to a remote api.
+
+
+<details>
+  <summary>How do I juggle useState, useEffect and Request all together??</summary>
+
+  ```javascript
+  import React, { useState, useEffect } from 'react'
+  import Typography from '@mui/material/Typography'
+
+  import Request from '../api/utils/request'
+
+  function CryptoCard({ id }) {
+    const [data, setData] = useState([])
+    const [error, setError] = useState(undefined)
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+      async function fetchData() {
+        setIsLoading(true)
+
+        try {
+          if (id) {
+            const searchResponse = await Request.get({
+              url: '/search',
+              params: {
+                q: coin,
+                limit: 6,
+                c: 'currencies',
+              },
+            })
+            setData(searchResponse.data.currencies)
+          }
+        } catch (e) {
+          setError(e)
+        } finally {
+          setIsLoading(false)
+        }
+      }
+
+      fetchData()
+    }, [id])
+
+    return (
+      <div>
+        <Typography variant="h5">{data?.name}</Typography>
+        <Typography color="secondary" variant="p" component="p">
+          {data?.quotes?.USD?.price}$
+        </Typography>
+      </div>
+    )
+  }
+  ```
+</details>
+
+
+## Fetching coin information
+
+Lest take a closer look at the [CryptoCard](./src/components/CryptoCard.jsx) aimed towards rendering the cryptocurrency's details for a given coinId.
+
+Instead of reapplying the previous approach with useState and useEffect, we will take advantage of [React Query](https://react-query.tanstack.com/) and the [useQuery](https://react-query.tanstack.com/reference/useQuery) hook, which already abstracts all the logic of the previous step to manage the errors and provide an indication that the application is loading.
+Rely on useQuery hook to fetch the coin's ticker.
+
+Coinpaprika's documentation to fetch a coin's ticker by id:
+* https://api.coinpaprika.com/#operation/getTickersById
+
+Example for Bitcoin:
+* https://api.coinpaprika.com/v1/tickers/btc-bitcoin
+
+
+
+<details>
+  <summary>How do I use react-query?</summary>
+
+  ```javascript
+  import React from 'react'
+  import Typography from '@mui/material/Typography'
+  import { useQuery } from 'react-query'
+
+  function CryptoCard({ id }) {
+    const { data, error, isLoading } = useQuery(['ticker', id], () =>
+      Request.get({ url: `/tickers/${id}` }),
+    )
+
+    return (
+      <div>
+        <Typography variant="h5">{data?.name}</Typography>
+        <Typography color="secondary" variant="p" component="p">
+          {data?.quotes?.USD?.price}$
+        </Typography>
+      </div>
+    )
+  }
+  ```
+</details>
+
+
+<details>
+  <summary>How do isolate the useQuery for further reutilization?</summary>
+
+  Move logic for the useQuery into a dedicated hook, useCoin.
+
+  ```javascript
+  import React from 'react'
+  import Typography from '@mui/material/Typography'
+  import { useQuery } from 'react-query'
+
+  const useCoin = (coinId) => useQuery(
+    ['ticker', coinId],
+    () => Request.get({ url: `/tickers/${coinId}` }),
+  )
+
+  function CryptoCard({ id }) {
+    const { data, error, isLoading } = useCoin(id)
+
+    return (
+      <div>
+        <Typography variant="h5">{data?.name}</Typography>
+        <Typography color="secondary" variant="p" component="p">
+          {data?.quotes?.USD?.price}$
+        </Typography>
+      </div>
+    )
+  }
+  ```
+</details>
+
+## Decoupling data fetching from data rendering
+
+Lets take a look at our component [CryptoCard](./src/components/CryptoCard.jsx), which has two major responsibilities, fetch data about the provided cryptocurrency and render its details. This approach is quite lackluster since it hinders its ability to reuse the component over the application and we will most likely have to repeat the code to fetch market's data, which we would like to avoid because **duplication is evil**.
+
+Lets break this responsibilities apart and create a component that is only capable of fetching coin's details and another capable of rendering the coin's market data.
+
+The second component is a slim version of our current component without the logic associated with fetching the coin's ticker.
+The first component, which we will refer as a Resource Provider will be an higher-order component (hoc), capable of fetching the coin's data and provide it to its children.
+
+
+<details>
+  <summary>How does the second component get any data?</summary>
+
+
+  An higher-order component is a pattern often used to control and shape the rendering of the provided children without requiring any knowledge or binding with the underlying child components.
+
+  ```javascript
+  import React from 'react'
+  import Typography from '@mui/material/Typography'
+  import { useQuery } from 'react-query'
+
+  const useCoin = (coinId) => useQuery(
+    ['ticker', coinId],
+    () => Request.get({ url: `/tickers/${coinId}` }),
+  )
+
+  function ResourceProvider({url, coinId, children}) {
+    const {data , isLoading, error} = useQuery(
+      ['ticker', coinId],
+      // () => Request.get({ url: `/tickers/${coinId}` }),
+      () => Request.get({ url }),
+    )
+
+    return children({data, isLoading, error})
+
+  }
+
+  function CryptoCard({ id }) {
+    const { data, error, isLoading } = useCoin(id)
+
+    return (
+      <ResourceProvider coinId={id} url={`/tickers/${id}`}>
+        {({data, isLoading, error}) => (
+          <div>
+            <Typography variant="h5">{data?.name}</Typography>
+            <Typography color="secondary" variant="p" component="p">
+              {data?.quotes?.USD?.price}$
+            </Typography>
+          </div>
+        )}
+      </ResourceProvider>
+    )
+  }
+  ```
+</details>
+
+
+# Next steps
+
+Explore the useQuery's documentation and focus upon the configuration the hook can receive to tailor its behavior to our application.
+
+<details>
+  <summary>How do I provide additional configuration to useQuery?</summary>
+
+  useQuery can receive a third parameter with options refining its behavior to better suite the nature of the interaction between the application and an api.
+  A comprehensive list of can be found [here](https://react-query.tanstack.com/reference/useQuery)
+
+
+  ```javascript
+  import React from 'react'
+  import Typography from '@mui/material/Typography'
+  import { useQuery } from 'react-query'
+
+  function CryptoCard({ id }) {
+    const { data, error, isLoading } = useQuery(
+      ['ticker', id],
+      () => Request.get({ url: `/tickers/${id}` }),
+      {
+       refetchInterval: 30000, // refetch every 30 seconds
+       retry: false,
+      }
+    )
+
+    return (
+      <div>
+        <Typography variant="h5">{data?.name}</Typography>
+        <Typography color="secondary" variant="p" component="p">
+          {data?.quotes?.USD?.price}$
+        </Typography>
+      </div>
+    )
+  }
+  ```
+
+</details>
