@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { styled } from '@mui/system'
 import Grid from '@mui/material/Grid'
@@ -12,10 +12,9 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import CryptoLogo from './CryptoLogo'
 import { useGetCryptoInfo } from '../hooks/useGetCryptoInfo'
+import useFavorites from '../hooks/useFavorites'
 import CoinSpinner from './CoinSpinner'
 import ErrorMessage from './ErrorMessage'
-import { setStorageItem, getStorageItem } from '../utils/storage'
-import { FAVORITES_KEY } from '../utils/constants'
 
 const CryptoCardContainer = styled(Card)({
   position: 'relative',
@@ -91,24 +90,8 @@ CryptoValueChange.propTypes = {
  */
 
 function CryptoCard({ id }) {
-  const [isFavorte, setIsFavorite] = useState(false)
   const { isLoading, data, error } = useGetCryptoInfo(id)
-
-  useEffect(() => {
-    const cryptoFavorites = getStorageItem(FAVORITES_KEY)
-    const isFav = !!cryptoFavorites.find((crypto) => crypto === id)
-    setIsFavorite(isFav)
-  }, [id])
-
-  const toggleFavorites = useCallback(() => {
-    const cryptoFavorites = getStorageItem(FAVORITES_KEY)
-    const newFav = isFavorte
-      ? cryptoFavorites.filter((crypto) => crypto !== id)
-      : [...cryptoFavorites, id]
-
-    setStorageItem(FAVORITES_KEY, newFav)
-    setIsFavorite(!isFavorte)
-  }, [id, isFavorte])
+  const [isFavorite, toggleFavorites] = useFavorites(id)
 
   const Content = useCallback(() => {
     if (isLoading) {
@@ -142,7 +125,7 @@ function CryptoCard({ id }) {
             $
           </Typography>
           <FavoriteIcon onClick={toggleFavorites}>
-            {isFavorte ? (
+            {isFavorite ? (
               <Star color="secondary" fontSize="large" />
             ) : (
               <StarBorder color="secondary" fontSize="large" />
@@ -152,7 +135,7 @@ function CryptoCard({ id }) {
         <CardLogo symbol={data?.symbol} />
       </CryptoCardContainer>
     )
-  }, [isLoading, error, data, id, toggleFavorites, isFavorte])
+  }, [isLoading, error, data, id, toggleFavorites, isFavorite])
 
   return (
     <Grid item xs={12} md={6} lg={4}>
