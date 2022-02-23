@@ -147,6 +147,7 @@ For this exercise we will focus on a minimalist approach relying exclusively upo
 ## Fetching coin information
 
 Lest take a closer look at the [CryptoCard](./src/components/CryptoCard.jsx) aimed towards rendering the cryptocurrency's details for a given coinId.
+As well as providing an interface to follow a cryptocurrency.
 
 Instead of reapplying the previous approach with useState and useEffect, we will take advantage of [React Query](https://react-query.tanstack.com/) and the [useQuery](https://react-query.tanstack.com/reference/useQuery) hook, which already abstracts all the logic of the previous step to manage the errors and provide an indication that the application is loading.
 Rely on useQuery hook to fetch the coin's ticker.
