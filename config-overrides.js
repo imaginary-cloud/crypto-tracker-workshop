@@ -37,7 +37,11 @@ module.exports = function override(config, env) {
 
     return rule
   })
-  return config
+
+  return {
+    ...config,
+    stats: false
+  }
 }
 
 /* eslint-enable */
